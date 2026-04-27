@@ -1,0 +1,66 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile and statistics",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "email": { "type": "string" },
+        "displayName": { "type": "string" },
+        "photoURL": { "type": "string" },
+        "stats": {
+          "type": "object",
+          "properties": {
+            "easy": { "type": "integer" },
+            "medium": { "type": "integer" },
+            "hard": { "type": "integer" },
+            "mixed": { "type": "integer" },
+            "dailyStreak": { "type": "integer" },
+            "lastDailyChallenge": { "type": "string", "format": "date-time" }
+          }
+        }
+      },
+      "required": ["uid", "email", "stats"]
+    },
+    "LeaderboardEntry": {
+      "title": "Leaderboard Entry",
+      "description": "A single entry in the leaderboard for a specific difficulty",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "displayName": { "type": "string" },
+        "score": { "type": "integer" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "score", "updatedAt"]
+    },
+    "GameLog": {
+      "title": "Game Log",
+      "description": "Record of a completed vocabulary test session",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "score": { "type": "integer" },
+        "difficulty": { "type": "string", "enum": ["easy", "medium", "hard", "mixed"] },
+        "mode": { "type": "string", "enum": ["practice", "daily", "streak"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "score", "difficulty", "mode", "createdAt"]
+    }
+  },
+  "firestore": {
+    "users/{userId}": {
+      "schema": "User",
+      "description": "User profiles and aggregate stats"
+    },
+    "leaderboards/{difficulty}/scores/{userId}": {
+      "schema": "LeaderboardEntry",
+      "description": "Top scores partitioned by difficulty"
+    },
+    "games/{gameId}": {
+      "schema": "GameLog",
+      "description": "History of all games played"
+    }
+  }
+}

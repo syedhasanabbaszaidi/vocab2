@@ -1,0 +1,6 @@
+{
+  "name": "VocabMaster",
+  "description": "A professional English vocabulary testing app with daily challenges, streaks, and global leaderboards.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["firebase", "ai_generation"]
+}

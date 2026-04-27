@@ -20,8 +20,9 @@ function AppContent() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Loader2 className="w-8 h-8 text-blue-600 animate-spin" />
+      <div className="min-h-screen flex flex-col items-center justify-center bg-slate-50 gap-4">
+        <div className="w-12 h-12 border-4 border-slate-200 border-t-indigo-600 rounded-full animate-spin" />
+        <p className="text-slate-400 text-[10px] font-bold uppercase tracking-[0.3em]">VocabMaster Initializing</p>
       </div>
     );
   }
@@ -31,7 +32,7 @@ function AppContent() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-slate-50">
       <Dashboard 
         onStartGame={(mode, difficulty) => setActiveGame({ mode, difficulty })}
         onViewLeaderboard={() => setShowLeaderboard(true)}

@@ -128,50 +128,52 @@ export default function Game({ difficulty, mode, onClose }: GameProps) {
 
   if (loading && questions.length === 0) {
     return (
-      <div className="fixed inset-0 bg-white z-50 flex flex-col items-center justify-center p-6 text-center">
+      <div className="fixed inset-0 bg-slate-50 z-50 flex flex-col items-center justify-center p-6 text-center font-sans">
         <motion.div
           animate={{ rotate: 360 }}
           transition={{ repeat: Infinity, duration: 2, ease: "linear" }}
-          className="mb-6"
+          className="mb-8"
         >
-          <Brain className="w-16 h-16 text-blue-500" />
+          <div className="w-20 h-20 bg-indigo-600 rounded-3xl flex items-center justify-center shadow-xl shadow-indigo-100">
+            <Brain className="w-10 h-10 text-white" />
+          </div>
         </motion.div>
-        <h2 className="text-2xl font-bold text-gray-900 mb-2">Generating Challenges</h2>
-        <p className="text-gray-500">Sharpening the words for your level...</p>
+        <h2 className="text-2xl font-bold text-slate-900 mb-2 italic">VocabMaster</h2>
+        <p className="text-slate-400 font-bold uppercase tracking-[0.2em] text-[10px]">Curating your challenges...</p>
       </div>
     );
   }
 
   if (gameComplete) {
     return (
-      <div className="fixed inset-0 bg-white z-50 flex flex-col items-center justify-center p-8 text-center">
+      <div className="fixed inset-0 bg-slate-50 z-50 flex flex-col items-center justify-center p-8 text-center font-sans">
         <motion.div
           initial={{ scale: 0.5, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
-          className="w-32 h-32 bg-yellow-100 rounded-full flex items-center justify-center mb-8"
+          className="w-32 h-32 bg-indigo-600 rounded-full flex items-center justify-center mb-8 shadow-2xl shadow-indigo-200"
         >
-          <Trophy className="w-16 h-16 text-yellow-600" />
+          <Trophy className="w-16 h-16 text-white" />
         </motion.div>
-        <h2 className="text-4xl font-black text-gray-900 mb-2">Well Done!</h2>
-        <p className="text-gray-500 mb-8 max-w-xs">You mastered the vocabulary set and earned XP.</p>
+        <h2 className="text-4xl font-black text-slate-900 mb-2 tracking-tight italic">VocabMaster Mastered</h2>
+        <p className="text-slate-500 mb-8 max-w-xs">You've successfully expanded your mental lexicon.</p>
         
-        <div className="bg-gray-50 rounded-3xl p-8 w-full max-w-sm mb-12 flex justify-around border border-gray-100">
+        <div className="bg-white rounded-[2.5rem] p-8 w-full max-w-sm mb-12 flex justify-around border border-slate-200 shadow-xl shadow-slate-200/50">
           <div>
-            <div className="text-3xl font-black text-gray-900">{score}</div>
-            <div className="text-xs font-bold text-gray-400 uppercase tracking-widest mt-1">Score</div>
+            <div className="text-3xl font-black text-slate-900">{score.toLocaleString()}</div>
+            <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">XP Gained</div>
           </div>
-          <div className="w-px bg-gray-200" />
+          <div className="w-px bg-slate-100" />
           <div>
-            <div className="text-3xl font-black text-gray-900">{currentIndex + 1}</div>
-            <div className="text-xs font-bold text-gray-400 uppercase tracking-widest mt-1">Words</div>
+            <div className="text-3xl font-black text-slate-900">{currentIndex + 1}</div>
+            <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">Word count</div>
           </div>
         </div>
 
         <button
           onClick={onClose}
-          className="w-full max-w-sm py-4 bg-gray-900 text-white rounded-2xl font-bold hover:bg-gray-800 transition-all shadow-lg active:scale-[0.98]"
+          className="w-full max-w-sm py-4 bg-indigo-600 text-white rounded-2xl font-bold hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-100 active:scale-[0.98]"
         >
-          Back to Dashboard
+          Return to Dashboard
         </button>
       </div>
     );
@@ -180,35 +182,38 @@ export default function Game({ difficulty, mode, onClose }: GameProps) {
   const currentQ = questions[currentIndex];
 
   return (
-    <div className="fixed inset-0 bg-white z-50 flex flex-col font-sans">
+    <div className="fixed inset-0 bg-slate-50 z-50 flex flex-col font-sans">
       {/* Progress Header */}
-      <div className="px-6 py-4 flex items-center justify-between border-b border-gray-100">
-        <button onClick={onClose} className="p-2 -ml-2 text-gray-400 hover:text-gray-900">
+      <div className="px-6 py-4 flex items-center justify-between bg-white border-b border-slate-200 h-16">
+        <button onClick={onClose} className="p-2 text-slate-400 hover:text-rose-500 transition-colors">
           <X className="w-6 h-6" />
         </button>
         <div className="flex-1 max-w-xs mx-4">
-          <div className="h-1.5 bg-gray-100 rounded-full overflow-hidden">
+          <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
             <motion.div 
               initial={{ width: 0 }}
               animate={{ width: `${((currentIndex + 1) / questions.length) * 100}%` }}
-              className="h-full bg-blue-600"
+              className="h-full bg-indigo-600"
             />
           </div>
         </div>
-        <div className="text-sm font-bold text-gray-400 tracking-tighter">
+        <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest w-12 text-right">
           {currentIndex + 1} / {questions.length}
         </div>
       </div>
 
       <main className="flex-1 flex flex-col p-6 overflow-y-auto">
-        <div className="max-w-xl mx-auto w-full py-12 flex-1 flex flex-col">
+        <div className="max-w-2xl mx-auto w-full py-8 md:py-16 flex-1 flex flex-col">
           <div className="flex-1">
-            <h2 className="text-sm font-bold uppercase tracking-widest text-blue-600 mb-6">Definition</h2>
-            <p className="text-2xl md:text-3xl font-medium text-gray-900 leading-tight mb-12">
+            <div className="flex items-center gap-2 mb-6">
+              <div className="w-8 h-8 bg-indigo-100 rounded-lg flex items-center justify-center text-indigo-600 font-bold text-xs italic">Q</div>
+              <h2 className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400">Contextual Definition</h2>
+            </div>
+            <p className="text-2xl md:text-3xl font-bold text-slate-900 leading-tight mb-12 italic">
                "{currentQ.definition}"
             </p>
 
-            <div className="space-y-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {currentQ.options.map((option, idx) => (
                 <motion.button
                   key={idx}
@@ -216,19 +221,19 @@ export default function Game({ difficulty, mode, onClose }: GameProps) {
                   disabled={answered !== null}
                   onClick={() => handleAnswer(idx)}
                   className={`
-                    w-full p-6 text-left rounded-3xl border-2 transition-all flex items-center justify-between font-bold text-lg
-                    ${answered === null ? 'border-gray-100 hover:border-gray-200 hover:bg-gray-50' : ''}
-                    ${answered === idx && idx === currentQ.correctIndex ? 'border-green-500 bg-green-50 text-green-900' : ''}
-                    ${answered === idx && idx !== currentQ.correctIndex ? 'border-red-500 bg-red-50 text-red-900' : ''}
-                    ${answered !== null && idx === currentQ.correctIndex ? 'border-green-500 bg-green-50 text-green-900' : ''}
+                    w-full p-6 text-left rounded-3xl border border-slate-200 transition-all flex items-center justify-between font-bold text-lg shadow-sm
+                    ${answered === null ? 'bg-white hover:border-indigo-600 hover:bg-indigo-50/30' : ''}
+                    ${answered === idx && idx === currentQ.correctIndex ? 'border-emerald-500 bg-emerald-50 text-emerald-900 shadow-emerald-50' : ''}
+                    ${answered === idx && idx !== currentQ.correctIndex ? 'border-rose-500 bg-rose-50 text-rose-900 shadow-rose-50' : ''}
+                    ${answered !== null && idx === currentQ.correctIndex ? 'border-emerald-500 bg-emerald-50 text-emerald-900 shadow-emerald-50' : ''}
                   `}
                 >
                   {option}
                   {answered !== null && idx === currentQ.correctIndex && (
-                    <CheckCircle2 className="w-6 h-6 text-green-600 shrink-0" />
+                    <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0" />
                   )}
                   {answered === idx && idx !== currentQ.correctIndex && (
-                    <XCircle className="w-6 h-6 text-red-600 shrink-0" />
+                    <XCircle className="w-5 h-5 text-rose-600 shrink-0" />
                   )}
                 </motion.button>
               ))}
@@ -241,20 +246,20 @@ export default function Game({ difficulty, mode, onClose }: GameProps) {
                 initial={{ y: 50, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 exit={{ y: 50, opacity: 0 }}
-                className="mt-8"
+                className="mt-12"
               >
-                <div className={`p-6 rounded-[2rem] flex items-center justify-between shadow-2xl ${answered === currentQ.correctIndex ? 'bg-green-600' : 'bg-red-600'}`}>
+                <div className={`p-8 rounded-[2.5rem] flex items-center justify-between shadow-2xl ${answered === currentQ.correctIndex ? 'bg-indigo-600 shadow-indigo-200' : 'bg-slate-900 shadow-slate-200'}`}>
                   <div className="text-white">
-                    <div className="text-sm font-bold uppercase tracking-widest opacity-80">
-                      {answered === currentQ.correctIndex ? 'Amazing!' : 'Not quite'}
-                    </div>
-                    <div className="text-xl font-bold">
-                      The word is <span className="underlineDecoration-white">{currentQ.word}</span>
+                    <p className="text-[10px] font-bold uppercase tracking-[0.2em] opacity-60 mb-1">
+                      {answered === currentQ.correctIndex ? 'Precision Achieved' : 'Vocabulary Expanded'}
+                    </p>
+                    <div className="text-2xl font-bold italic">
+                       {currentQ.word}
                     </div>
                   </div>
                   <button 
                     onClick={nextQuestion}
-                    className="p-4 bg-white rounded-2xl text-gray-900 shadow-md active:scale-95 transition-transform"
+                    className="p-4 bg-white rounded-2xl text-slate-900 shadow-xl active:scale-95 transition-transform"
                   >
                     <ArrowRight className="w-6 h-6" />
                   </button>

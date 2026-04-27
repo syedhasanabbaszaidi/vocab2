@@ -51,26 +51,26 @@ export default function Leaderboard({ onClose }: LeaderboardProps) {
   }, [difficulty]);
 
   return (
-    <div className="min-h-screen bg-gray-50 text-gray-900 font-sans pb-10">
+    <div className="min-h-screen bg-slate-50 text-slate-900 font-sans pb-10">
       {/* Header */}
-      <header className="px-6 py-8 flex items-center justify-between bg-white border-b border-gray-100">
-        <button onClick={onClose} className="p-3 bg-gray-50 rounded-2xl text-gray-500 hover:text-gray-900">
-          <ArrowLeft className="w-5 h-5" />
+      <nav className="h-16 px-8 flex items-center justify-between bg-white border-b border-slate-200 sticky top-0 z-10">
+        <button onClick={onClose} className="p-2 text-slate-400 hover:text-indigo-600 transition-colors">
+          <ArrowLeft className="w-6 h-6" />
         </button>
-        <h1 className="text-xl font-black tracking-tight uppercase">Leaderboard</h1>
-        <div className="w-11" />
-      </header>
+        <h1 className="text-xl font-bold tracking-tight italic">Hall of Fame</h1>
+        <div className="w-10" />
+      </nav>
 
-      <main className="max-w-2xl mx-auto px-6 py-8">
+      <main className="max-w-3xl mx-auto px-6 py-8">
         {/* Difficulty Tabs */}
-        <div className="flex gap-2 mb-8 overflow-x-auto pb-2 no-scrollbar">
+        <div className="flex gap-3 mb-10 overflow-x-auto pb-4 no-scrollbar">
           {Object.values(Difficulty).map((val) => (
             <button
               key={val}
               onClick={() => setDifficulty(val)}
               className={`
-                px-6 py-2.5 rounded-2xl text-sm font-bold uppercase tracking-wider whitespace-nowrap transition-all flex-1
-                ${difficulty === val ? 'bg-gray-900 text-white shadow-lg shadow-gray-200' : 'bg-white text-gray-400 border border-transparent'}
+                px-6 py-3 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] whitespace-nowrap transition-all flex-1
+                ${difficulty === val ? 'bg-indigo-600 text-white shadow-xl shadow-indigo-100' : 'bg-white text-slate-400 border border-slate-200 hover:border-indigo-300'}
               `}
             >
               {val}
@@ -78,47 +78,56 @@ export default function Leaderboard({ onClose }: LeaderboardProps) {
           ))}
         </div>
 
-        {/* Podium / Top Rank */}
-        <div className="bg-white rounded-[2.5rem] p-4 shadow-xl shadow-gray-200/50 border border-gray-100 min-h-[400px]">
+        {/* Backdrop Card */}
+        <div className="bg-white rounded-[2.5rem] p-2 shadow-2xl shadow-slate-200 border border-slate-200 min-h-[500px]">
           {loading ? (
-            <div className="flex flex-col items-center justify-center p-20 gap-4">
-              <Loader2 className="w-8 h-8 text-blue-500 animate-spin" />
-              <p className="text-gray-400 text-sm font-medium uppercase tracking-widest">Loading ranks...</p>
+            <div className="flex flex-col items-center justify-center p-32 gap-6">
+              <div className="relative">
+                 <div className="w-16 h-16 border-4 border-slate-100 border-t-indigo-600 rounded-full animate-spin" />
+                 <Trophy className="w-6 h-6 text-indigo-600/30 absolute inset-0 m-auto" />
+              </div>
+              <p className="text-slate-400 text-[10px] font-bold uppercase tracking-[0.3em]">Synchronizing ranks</p>
             </div>
           ) : scores.length === 0 ? (
-            <div className="flex flex-col items-center justify-center p-20 gap-4 text-center">
-              <div className="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center">
-                <Sparkles className="w-8 h-8 text-gray-300" />
+            <div className="flex flex-col items-center justify-center p-32 gap-6 text-center">
+              <div className="w-20 h-20 bg-slate-50 rounded-3xl flex items-center justify-center text-slate-200">
+                <Sparkles className="w-10 h-10" />
               </div>
-              <p className="text-gray-400 text-sm font-medium">No scores for this level yet.<br/>Be the first to rank!</p>
+              <div>
+                <p className="text-slate-900 font-bold text-lg italic mb-1">Untapped Territory</p>
+                <p className="text-slate-400 text-[10px] font-bold uppercase tracking-widest">Be the first to claim your throne</p>
+              </div>
             </div>
           ) : (
-            <div className="divide-y divide-gray-50">
+            <div className="divide-y divide-slate-50 px-4 py-4">
               {scores.map((score, index) => (
                 <motion.div
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={{ opacity: 1, x: 0 }}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.05 }}
                   key={score.userId}
-                  className="flex items-center justify-between p-5 group"
+                  className="flex items-center justify-between p-6 group hover:bg-slate-50 rounded-3xl transition-colors cursor-default"
                 >
-                  <div className="flex items-center gap-5">
+                  <div className="flex items-center gap-6">
                     <div className={`
-                      w-10 h-10 rounded-xl flex items-center justify-center font-black text-sm
-                      ${index === 0 ? 'bg-yellow-100 text-yellow-700' : 
-                        index === 1 ? 'bg-gray-100 text-gray-600' : 
-                        index === 2 ? 'bg-orange-100 text-orange-700' : 'text-gray-400'}
+                      w-12 h-12 rounded-2xl flex items-center justify-center font-black text-lg italic
+                      ${index === 0 ? 'bg-amber-100 text-amber-700 shadow-lg shadow-amber-100' : 
+                        index === 1 ? 'bg-slate-100 text-slate-600' : 
+                        index === 2 ? 'bg-orange-50 text-orange-700' : 'text-slate-300'}
                     `}>
                       {index + 1}
                     </div>
                     <div>
-                      <div className="font-bold text-gray-900 group-hover:text-blue-600 transition-colors">{score.displayName}</div>
-                      <div className="text-xs font-bold text-gray-400 uppercase tracking-widest">Scholar</div>
+                      <div className="font-bold text-slate-900 text-lg tracking-tight group-hover:text-indigo-600 transition-colors flex items-center gap-2">
+                        {score.displayName}
+                        {index === 0 && <Sparkles className="w-4 h-4 text-amber-400" />}
+                      </div>
+                      <div className="text-[10px] font-black text-slate-300 uppercase tracking-widest mt-0.5">Linguistic Scholar</div>
                     </div>
                   </div>
                   <div className="flex flex-col items-end">
-                    <div className="text-xl font-black text-gray-900 tracking-tight">{score.score.toLocaleString()}</div>
-                    <div className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Total XP</div>
+                    <div className="text-2xl font-black text-slate-900 tracking-tight italic">{score.score.toLocaleString()}</div>
+                    <div className="text-[10px] font-bold text-indigo-400 uppercase tracking-widest">Global XP</div>
                   </div>
                 </motion.div>
               ))}
